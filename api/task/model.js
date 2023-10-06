@@ -9,10 +9,12 @@ const db = require('../../data/dbConfig')
     "project_id:1
 }
 */
-function create(task){
-    return db('tasks');
+async function create(task){
+    const id = await db('tasks').insert(task);
+    const result = await db('tasks').where('task_id', id).first();
+    return result;
 }
-
+ 
 /*[{
     "task_id":1,
     "task_description":"baz",
@@ -23,7 +25,9 @@ function create(task){
 }]
 */
 function get(){
-    return db('tasks');
+    return db('tasks as t')
+        .leftJoin('projects as p', 't.project_id', 'p.project_id')
+        .select('task_id', 'task_notes', 'task_description', 'task_completed', 'p.project_name', 'p.project_description');
 }
 
 

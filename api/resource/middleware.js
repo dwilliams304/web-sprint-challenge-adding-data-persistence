@@ -7,9 +7,9 @@ const checkResourceBody = (req, res, next) => {
 
 const checkExistingResouce = async (req, res, next) => {
     try{
-        const existing = await db('resources').where('resource_name', req.body.resource_name);
+        const existing = await db('resources').where('resource_name', req.body.resource_name).first();
     
-        if(existing) next({status: 400, message: `resource with name of: ${req.body.resource_name} already exists`}) 
+        if(existing ) next({status: 400, message: `resource with name of: ${req.body.resource_name} already exists`}) 
         else next();
 
     }

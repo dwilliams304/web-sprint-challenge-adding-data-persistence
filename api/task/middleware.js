@@ -7,9 +7,12 @@ const checkTaskBody = (req, res, next) => {
 
 const checkValidProjectID = async (req, res, next) => {
     try{
-        const existing = await db('projects').where('project_id', req.body.project_id).first();
-        if(!existing) next({status: 404, message: `project with id of: ${req.body.project_id} not found`})
-        else next();
+        if(req.body.project_id === undefined) next({status: 400, message: 'project_id is required'})
+        else{
+            const existing = await db('projects').where('project_id', req.body.project_id).first();
+            if(!existing) next({status: 404, message: `project with id of: ${req.body.project_id} not found`})
+            else next();
+        }
     }
     catch(err) { next(err); }
 }

@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/', checkValidProjectID, checkTaskBody, (req, res, next) => {
     Tasks.create(req.body)
     .then(newTask => {
+        newTask.task_completed === 1 ? newTask.task_completed = true : newTask.task_completed = false;
         res.status(201).json(newTask);
     })
     .catch(next);
@@ -18,6 +19,9 @@ router.post('/', checkValidProjectID, checkTaskBody, (req, res, next) => {
 router.get('/', (req, res, next) => {
     Tasks.get()
     .then(tasks => {
+        tasks.map(task => {
+            task.task_completed === 1 ? task.task_completed = true : task.task_completed = false;
+        })
         res.status(201).json(tasks);
     })
     .catch(next);

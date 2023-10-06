@@ -6,8 +6,10 @@ const db = require('../../data/dbConfig')
     "resource_name":"foo",
     "resource_description":null
 }*/
-function create(resource){
-    return db('resources');
+async function create(resource){
+    const id = await db('resources').insert(resource);
+    const result = await db('resources').where('resource_id', id).first();
+    return {resource_name: result.resource_name};
 }
 
 /*[{
