@@ -9,7 +9,10 @@ const db = require('../../data/dbConfig')
     "project_completed":false
 }*/
 function create(project){
-    return db('projects');
+    return db('projects').insert(project)
+        .then(([id]) => {
+            return db('projects').where('project_id', id).first();
+        });
 }
 
 /*[{
@@ -18,9 +21,15 @@ function create(project){
     "project_description":null,
     "project_completed":false
 }]*/
-function get(){
-    return db('projects')
+async function get(){
+    const projects = await db('projects')
     .select('project_id', 'project_name', 'project_description', 'project_completed');
+
+    projects.map(project => {
+        project.project_completed === 1 ? project.project_completed = true : project.project_completed = false;
+    })
+
+    return projects;
 }
 
 
