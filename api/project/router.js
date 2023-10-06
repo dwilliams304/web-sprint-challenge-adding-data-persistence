@@ -9,6 +9,7 @@ const router = express.Router();
 router.post('/', checkProjectBody, (req, res, next) => {
     Projects.create(req.body)
         .then(newPost => {
+            newPost.project_completed === 0 ? newPost.project_completed = false : newPost.project_completed = true;
             res.status(201).json(newPost);
         })
         .catch(next);

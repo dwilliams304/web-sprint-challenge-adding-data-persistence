@@ -8,11 +8,12 @@ const db = require('../../data/dbConfig')
     "project_description":null,
     "project_completed":false
 }*/
-function create(project){
-    return db('projects').insert(project)
-        .then(([id]) => {
-            return db('projects').where('project_id', id).first();
-        });
+async function create(project){
+    const id = await db('projects').insert(project);
+
+    const result = await db('projects').where('project_id', id).first();
+    console.log(result.project_completed);
+    return result;
 }
 
 /*[{
