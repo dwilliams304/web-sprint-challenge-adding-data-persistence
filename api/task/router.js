@@ -6,14 +6,29 @@ const router = express.Router();
 
 
 router.post('/', (req, res, next) => {
-    res.json('task post wired')
+    Tasks.create(req.body)
+    .then(newTask => {
+        res.status(201).json(newTask);
+    })
+    .catch(next);
 })
 
 
 router.get('/', (req, res, next) => {
-    res.json('task get wired')
+    Tasks.get()
+    .then(tasks => {
+        res.status(201).json(tasks);
+    })
+    .catch(next);
 })
 
+
+router.use((err, req, res, next) => { //eslint-disable-line
+    res.status(err.status || 500).json({
+        message: err.message,
+        stack: err.stack
+    })
+})
 
 
 module.exports = router;

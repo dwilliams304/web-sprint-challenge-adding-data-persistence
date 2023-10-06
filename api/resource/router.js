@@ -6,14 +6,29 @@ const router = express.Router();
 
 
 router.post('/', (req, res, next) => {
-    res.json('resource post wired')
+    Resources.create(req.body)
+    .then(newResource => {
+        res.status(201).json(newResource);
+    })
+    .catch(next);
 })
 
 
 router.get('/', (req, res, next) => {
-    res.json('resource get wired')
+    Resources.get()
+    .then(resources => {
+        res.status(201).json(resources);
+    })
+    .catch(next);
 })
 
+
+router.use((err, req, res, next) => { //eslint-disable-line
+    res.status(err.status || 500).json({
+        message: err.message,
+        stack: err.stack
+    })
+})
 
 
 module.exports = router;
