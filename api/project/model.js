@@ -2,11 +2,11 @@
 const db = require('../../data/dbConfig')
 
 function create(project){
-
+    return db('projects');
 }
 
 function get(){
-
+    return db('projects');
 }
 
 
